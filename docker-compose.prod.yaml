@@ -17,5 +17,5 @@ services:
     ports:
       - 80:80
     environment:
-      - API_PORT
-      - DATABASE_URL
+      API_PORT: 80
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@i.database/${POSTGRES_DB}
