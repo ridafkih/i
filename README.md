@@ -15,7 +15,7 @@ Through the Shortcuts application on my iOS device, and other on-hand physical d
 
 You can install these on your own devices, and use this project as you please to build similar integrations. Most of these work well in automations which activate automatically, sans-prompt at sunrise, sunset, or at any point in the day.
 
-- [Send Generalized Location](https://www.icloud.com/shortcuts/a442d9d491f143e5902891af031f5e64)
+- [Send Generalized Location](https://www.icloud.com/shortcuts/297e837bd951409f956fcc2e2a82e753)
   - This template will allow you to send an API request to the `/location` endpoint with the generalized location information of the device it is run on.
 
 ## 🔨 Configuration & Launch
