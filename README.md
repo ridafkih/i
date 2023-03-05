@@ -43,7 +43,7 @@ yarn
 
 Once that's done, setup your `.env` file in the root directory according to the adjacent `.env.example` file.
 
-## Launch
+### Launch
 
 Launching the project locally is easy, using Docker, Prisma, and NodeJS.
 
