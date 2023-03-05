@@ -18,6 +18,20 @@ You can install these on your own devices, and use this project as you please to
 - [Send Generalized Location](https://www.icloud.com/shortcuts/297e837bd951409f956fcc2e2a82e753)
   - This template will allow you to send an API request to the `/location` endpoint with the generalized location information of the device it is run on.
 
+### Video Tutorials: Expand to View
+<details>
+  <summary><strong>Add Shortcut by URL</strong></summary>
+
+  https://user-images.githubusercontent.com/9158485/222948825-dfa0f20f-0e2e-471c-9fd5-b3d9b1490733.mp4
+
+</details>
+<details>
+  <summary><strong>Create Recurring Automation</strong></summary>
+
+  https://user-images.githubusercontent.com/9158485/222948822-70501dca-7563-4fc7-9ef0-480bc49ac08f.mp4
+
+</details>
+
 ## 🔨 Configuration & Launch
 
 ### Prerequisites
