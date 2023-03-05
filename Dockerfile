@@ -11,7 +11,7 @@ WORKDIR /runner
 
 COPY --from=builder /builder/dist ./dist
 COPY --from=builder /builder/yarn.lock /builder/package.json ./
-COPY --from=builder /builder/prisma/schema.prisma ./prisma/schema.prisma
+COPY --from=builder /builder/prisma/schema.prisma /builder/prisma/migrations ./prisma/
 RUN yarn install --production
 
 RUN sh -c npx awaitabase postgres $DATABASE_URL
