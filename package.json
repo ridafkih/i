@@ -5,9 +5,10 @@
   "author": "Rida <hello@rida.dev>",
   "license": "MIT",
   "scripts": {
+    "dev": "tsx --watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "tsx --watch src/index.ts",
+    "deploy": "prisma migrate deploy && yarn start",
     "prisma:mix": "tsx prisma && prisma generate",
     "prisma:migrate:dev": "prisma migrate dev",
     "database:up": "docker compose up -d",
