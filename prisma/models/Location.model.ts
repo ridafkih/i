@@ -6,5 +6,7 @@ export default createModel((LocationModel) => {
   LocationModel
     .mixin(UUIDMixin)
     .string("url")
+    .string("city")
+    .string("region")
     .mixin(CreatedUpdatedMixin);
 });
