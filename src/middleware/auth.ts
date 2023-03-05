@@ -1,9 +1,9 @@
-import { ExtendedContext } from "18h/dist/@types/method";
 import { verify } from "argon2";
 import { getAccessToken } from "../actions/access-token";
 import { deconstructAccessToken } from "../utils/access-token";
+import type { ParameterizedContext } from "koa";
 
-export const ensureAuthenticated = async (context: ExtendedContext, next: () => Promise<void>) => {
+export const ensureAuthenticated = async (context: ParameterizedContext, next: () => Promise<void>) => {
   const { authorization } = context.headers;
   
   const setUnauthorized = () => {

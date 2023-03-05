@@ -23,7 +23,7 @@ export default route<{ delay?: string }>({
       const description = `${city}, ${region}`;
 
       return {
-        body: { description, longitude, latitude, date: date.getTime() },
+        body: { description, longitude, latitude, date: date?.getTime() },
       };
     },
   },
@@ -41,12 +41,12 @@ export default route<{ delay?: string }>({
       }),
     },
     middleware: { pre: [logRequest, ensureAuthenticated] },
+    accepts: ["json"],
     async handler(context) {
       const { url, city, region, longitude, latitude } = context.request.body;
       const { id } = await addLocation(url, city, region, parseFloat(longitude), parseFloat(latitude));
       
       return { body: { id } };
     },
-    accepts: ["json"],
   },
 });

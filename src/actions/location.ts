@@ -13,7 +13,7 @@ export const getLastLocation = async (delay: number) => {
     orderBy: { createdAt: "desc" },
     select: { city: true, region: true, longitude: true, latitude: true, createdAt: true },
     where: { createdAt: { lte: new Date(Date.now() - delay).toISOString() } }
-  });
+  }) ?? {};
 
   return { city, region, longitude, latitude, date: createdAt };
 };
