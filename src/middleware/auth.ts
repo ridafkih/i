@@ -13,7 +13,7 @@ export const ensureAuthenticated = async (context: ExtendedContext, next: () => 
   if (!authorization) return setUnauthorized();
 
   const { id, secret } = deconstructAccessToken(authorization);
-  const { argon2 } = await getAccessToken(id, false) ?? {};
+  const { argon2 } = await getAccessToken(id, true) ?? {};
   if (!argon2) return setUnauthorized();
 
   const isAuthenticated = await verify(argon2, secret);
