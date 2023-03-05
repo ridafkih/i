@@ -3,7 +3,7 @@ import { hash } from "argon2";
 
 import { addAccessToken } from "../../actions/access-token";
 import { logRequest } from "../../middleware/log";
-import { createAccessSecret, createAccessToken, stripUuid } from "../../utils/access-token";
+import { createAccessSecret, createAccessToken } from "../../utils/access-token";
 
 export default route({
   post: {

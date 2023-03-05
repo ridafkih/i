@@ -16,3 +16,10 @@ export const getAccessToken = async (id: string, enabled = true) => {
     where: { id, enabled }
   });
 };
+
+export const enableAccessToken = async (id: string) => {
+  return prisma.accessToken.updateMany({
+    data: { enabled: true },
+    where: { id },
+  });
+};

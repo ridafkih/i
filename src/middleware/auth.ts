@@ -3,12 +3,11 @@ import { getAccessToken } from "../actions/access-token";
 import { deconstructAccessToken } from "../utils/access-token";
 import type { ParameterizedContext } from "koa";
 
+const { ADMIN_ARGON2 } = process.env;
+
 export const ensureAuthenticated = async (context: ParameterizedContext, next: () => Promise<void>) => {
   const { authorization } = context.headers;
-  
-  const setUnauthorized = () => {
-    context.status = 403;
-  }
+  const setUnauthorized = () => context.status = 403;
   
   if (!authorization) return setUnauthorized();
 
@@ -20,3 +19,15 @@ export const ensureAuthenticated = async (context: ParameterizedContext, next: (
   if (!isAuthenticated) return setUnauthorized();
   else return next();
 };
+
+export const ensureAdministrator = async (context: ParameterizedContext, next: () => Promise<void>) => {
+  const { authorization } = context.headers;
+  const setUnauthorized = () => context.status = 403;
+  
+  if (!authorization || !ADMIN_ARGON2) return setUnauthorized();
+
+  const isAdmin = await verify(ADMIN_ARGON2, authorization);
+  if (!isAdmin) return setUnauthorized();
+  
+  return next();
+}
