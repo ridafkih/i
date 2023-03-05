@@ -6,8 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "deploy": "prisma migrate deploy && node dist/index.js",
-    "start": "docker compose -f ./docker-compose.prod.yaml up",
+    "start": "node dist/index.js",
     "dev": "tsx --watch src/index.ts",
     "prisma:mix": "tsx prisma && prisma generate",
     "prisma:migrate:dev": "prisma migrate dev",
