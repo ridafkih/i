@@ -11,6 +11,8 @@ export default route({
         location: v.string().url().startsWith("https://maps.apple.com"),
         city: v.string(),
         region: v.string(),
+        longitude: v.string(),
+        latitude: v.string(),
       }),
       response: v.object({
         id: v.string(),
@@ -18,8 +20,8 @@ export default route({
     },
     middleware: { pre: [logRequest, ensureAuthenticated] },
     async handler(context) {
-      const { location: url, city, region } = context.request.body;
-      const { id } = await addLocation(url, city, region);
+      const { location: url, city, region, longitude, latitude } = context.request.body;
+      const { id } = await addLocation(url, city, region, parseFloat(longitude), parseFloat(latitude));
       
       return { body: { id } };
     },

@@ -8,5 +8,7 @@ export default createModel((LocationModel) => {
     .string("url")
     .string("city")
     .string("region")
+    .float("longitude")
+    .float("latitude")
     .mixin(CreatedUpdatedMixin);
 });
