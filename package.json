@@ -6,7 +6,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsx --watch src/index.ts",
-    "prisma:mix": "tsx prisma && prisma generate"
+    "prisma:mix": "tsx prisma && prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "database:up": "docker compose up -d",
+    "database:down": "docker compose down"
   },
   "devDependencies": {
     "@types/node": "^18.14.6",
