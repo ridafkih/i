@@ -9,11 +9,11 @@ export const addLocation = async (url: string, city: string, region: string, lon
  * @param delay The time to delay in milliseconds.
  */
 export const getLastLocation = async (delay: number) => {
-  const { longitude, latitude, createdAt } = await prisma.location.findFirst({
+  const { city, region, longitude, latitude, createdAt } = await prisma.location.findFirst({
     orderBy: { createdAt: "desc" },
-    select: { longitude: true, latitude: true, createdAt: true },
+    select: { city: true, region: true, longitude: true, latitude: true, createdAt: true },
     where: { createdAt: { lte: new Date(Date.now() - delay).toISOString() } }
   });
 
-  return { longitude, latitude, date: createdAt };
+  return { city, region, longitude, latitude, date: createdAt };
 };

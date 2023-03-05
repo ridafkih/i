@@ -11,6 +11,7 @@ export default route<{ delay?: string }>({
     schema: {
       request: v.unknown(),
       response: v.object({
+        description: v.string(),
         longitude: v.number(),
         latitude: v.number(),
         date: v.number(),
@@ -18,10 +19,11 @@ export default route<{ delay?: string }>({
     },
     middleware: { pre: [logRequest] },
     async handler() {
-      const { longitude, latitude, date } = await getLastLocation(LOCATION_TIME_DELAY);
+      const { longitude, latitude, city, region, date } = await getLastLocation(LOCATION_TIME_DELAY);
+      const description = `${city}, ${region}`;
 
       return {
-        body: { longitude, latitude, date: date.getTime() },
+        body: { description, longitude, latitude, date: date.getTime() },
       };
     },
   },
