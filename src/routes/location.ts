@@ -1,10 +1,30 @@
 import { route, validation as v } from "18h";
-import { addLocation } from "../actions/location";
+import { addLocation, getLastLocation } from "../actions/location";
 import { ensureAuthenticated } from "../middleware/auth";
 
 import { logRequest } from "../middleware/log";
 
-export default route({
+const LOCATION_TIME_DELAY = 0; // 1000 * 60 * 60 * 60 * 24;
+
+export default route<{ delay?: string }>({
+  get: {
+    schema: {
+      request: v.unknown(),
+      response: v.object({
+        longitude: v.number(),
+        latitude: v.number(),
+        date: v.number(),
+      }),
+    },
+    middleware: { pre: [logRequest] },
+    async handler() {
+      const { longitude, latitude, date } = await getLastLocation(LOCATION_TIME_DELAY);
+
+      return {
+        body: { longitude, latitude, date: date.getTime() },
+      };
+    },
+  },
   post: {
     schema: {
       request: v.object({
