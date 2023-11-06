@@ -25,7 +25,7 @@ export default route<{ limit?: string, cursor?: string }>({
     },
     middleware: { pre: [logRequest, ensureAuthenticated] },
     async handler(context) {
-      const limit = parseInt(context.params.limit!) || 100;
+      const limit = parseInt(context.URL.searchParams.get("limit")!) || 100;
       const cursor = context.URL.searchParams.get("cursor") ?? undefined;
   
       if (isNaN(limit) || limit < 0) return { status: 400 }
