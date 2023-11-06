@@ -5,6 +5,7 @@
   "author": "Rida <hello@rida.dev>",
   "license": "MIT",
   "scripts": {
+    "admin:gen": "tsx src/scripts/generate-admin.ts",
     "dev": "tsx --watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",

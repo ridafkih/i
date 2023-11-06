@@ -26,8 +26,11 @@ export const ensureAdministrator = async (context: ParameterizedContext, next: (
   
   if (!authorization || !ADMIN_ARGON2) return setUnauthorized();
 
-  const isAdmin = await verify(ADMIN_ARGON2, authorization);
-  if (!isAdmin) return setUnauthorized();
-  
-  return next();
+  const credentials = ADMIN_ARGON2.split(" ");
+  for (const credential of credentials) {
+    const isAdmin = await verify(credential, authorization);
+    if (isAdmin) return next();
+  }
+
+  return setUnauthorized();
 }
