@@ -7,7 +7,7 @@ import { logRequest } from "../middleware/log";
 export default route<{ limit?: string, cursor?: string }>({
   get: {
     schema: {
-      request: v.undefined(),
+      request: v.null(),
       response: v.object({
         locations: v.array(
           v.object({
@@ -22,7 +22,7 @@ export default route<{ limit?: string, cursor?: string }>({
         ),
         limit: v.number(),
         cursor: v.string().optional(),
-      }).or(v.undefined()),
+      }).or(v.null()).or(v.undefined()),
     },
     middleware: { pre: [logRequest, ensureAuthenticated] },
     async handler(context) {
