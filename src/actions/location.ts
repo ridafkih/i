@@ -65,6 +65,7 @@ export const getLocationHistory = async (
 ) => {
   const reference = await prisma.location.findFirst({
     where: cursor ? { id: { lte: cursor } } : {},
+    orderBy: { createdAt: "desc" },
     select: {
       id: true,
       city: true,
