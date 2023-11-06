@@ -17,3 +17,12 @@ export const getLastLocation = async (delay: number) => {
 
   return { city, region, longitude, latitude, date: createdAt };
 };
+
+export const getLastLocations = (cursor: string | undefined, limit: number) => {
+  return prisma.location.findMany({
+    orderBy: { createdAt: "desc" },
+    select: { id: true, city: true, region: true, longitude: true, latitude: true, createdAt: true },
+    where: cursor ? { id: { lt: cursor } } : {},
+    take: limit
+  });
+}
