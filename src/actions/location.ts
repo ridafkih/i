@@ -83,7 +83,7 @@ export const getLocationHistory = async (
     const previous = locations[locations.length - 1];
     const location = await prisma.location.findFirst({
       where: {
-        id: { lt: previous.id },
+        createdAt: { lt: previous.createdAt },
         city: { not: { equals: previous.city } },
         region: { not: { equals: previous.region } },
       },
