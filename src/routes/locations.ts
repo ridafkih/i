@@ -12,12 +12,11 @@ export default route<{ limit?: string, cursor?: string }>({
         locations: v.array(
           v.object({
             id: v.string(),
-            url: v.string(),
             city: v.string(),
             region: v.string(),
             longitude: v.number(),
             latitude: v.number(),
-            date: v.number(),
+            createdAt: v.number(),
           })
         ),
         limit: v.number(),
@@ -31,7 +30,10 @@ export default route<{ limit?: string, cursor?: string }>({
   
       if (isNaN(limit) || limit < 0) return { status: 400 }
   
-      const locations = await getLastLocations(cursor, limit);
+      const locations = (await getLastLocations(cursor, limit)).map(({ createdAt, ...location }) => {
+        return { ...location, createdAt: createdAt.getTime() };
+      });
+
       return { body: { locations, limit, cursor } }
     }
   },
