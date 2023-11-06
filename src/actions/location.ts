@@ -62,22 +62,30 @@ export const getLastLocations = (cursor: string | undefined, limit: number) => {
 export const getLocationHistory = async (
   cursor: string | undefined,
   limit: number
-) => {
-  const locations: LocationInput[] = [];
-  
-  let reference = await prisma.location.findFirst({
+) => {  
+  const reference = await prisma.location.findFirst({
     where: cursor ? { id: { lte: cursor } } : {},
+    select: {
+      id: true,
+      city: true,
+      region: true,
+      longitude: true,
+      latitude: true,
+      createdAt: true,
+    }
   });
 
   if (!reference) throw Error("Could not find reference location");
-  locations.push(reference);
+
+  const locations: LocationInput[] = [reference];
 
   for (let i = 0; i < limit; i++) {
+    const previous = locations[locations.length - 1];
     const location = await prisma.location.findFirst({
       where: {
-        id: { lt: reference.id },
-        city: { not: { equals: reference.city } },
-        region: { not: { equals: reference.region } },
+        id: { lt: previous.id },
+        city: { not: { equals: previous.city } },
+        region: { not: { equals: previous.region } },
       },
       select: {
         id: true,
