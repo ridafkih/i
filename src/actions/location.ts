@@ -2,7 +2,6 @@ import { Location } from "@prisma/client";
 import { prisma } from "../singletons/prisma";
 
 interface LocationInput {
-  id: string;
   city: string;
   region: string;
   longitude: number;
@@ -63,46 +62,45 @@ export const getLocationHistory = async (
   cursor: string | undefined,
   limit: number
 ) => {
-  const reference = await prisma.location.findFirst({
-    where: cursor ? { id: { lte: cursor } } : {},
+  const lastLocation = await prisma.location.findFirst({
     orderBy: { createdAt: "desc" },
     select: {
-      id: true,
       city: true,
       region: true,
       longitude: true,
       latitude: true,
       createdAt: true,
     },
+    where: cursor ? { id: cursor } : {},
   });
 
-  if (!reference) throw Error("Could not find reference location");
+  if (!lastLocation) return [];
 
-  const locations: LocationInput[] = [reference];
+  const locations: LocationInput[] = [];
+
+  let previousLocation = lastLocation;
 
   for (let i = 0; i < limit; i++) {
-    const previous = locations[locations.length - 1];
-    const location = await prisma.location.findFirst({
-      where: {
-        AND: [
-          { createdAt: { lt: previous.createdAt } },
-          { city: { not: { equals: previous.city } } },
-          { region: { not: { equals: previous.region } } },
-        ],
-      },
+    // get the location before the current location
+    const newLocation = await prisma.location.findFirst({
+      orderBy: { createdAt: "desc" },
       select: {
-        id: true,
         city: true,
         region: true,
         longitude: true,
         latitude: true,
         createdAt: true,
       },
-      orderBy: { createdAt: "desc" },
+      where: {
+        city: { not: previousLocation.city },
+        region: { not: previousLocation.region },
+        createdAt: { lt: previousLocation.createdAt },
+      },
     });
 
-    if (!location) break;
-    locations.push(location);
+    if (!newLocation) break;
+    locations.push(newLocation);
+    previousLocation = newLocation;
   }
 
   return locations;
