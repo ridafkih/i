@@ -14,7 +14,7 @@ if (isNaN(numericalApiPort))
   throw Error("The `API_PORT` environment variable is not valid.");
 
 const notifyProcessStarted = () => {
-  signale.success("The 18h service is running on port %d.", numericalApiPort);
+  signale.success("The 18h service is running on port %d", numericalApiPort);
 };
   
 router({

@@ -1,7 +1,7 @@
 import { route, validation as v } from "18h";
 import { hash } from "argon2";
 
-import { addAccessToken, enableAccessToken } from "../../actions/access-token";
+import { enableAccessToken } from "../../actions/access-token";
 import { ensureAdministrator } from "../../middleware/auth";
 import { logRequest } from "../../middleware/log";
 import { deconstructAccessToken } from "../../utils/access-token";
