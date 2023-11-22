@@ -49,7 +49,8 @@ const updateCurrentlyListening = async () => {
     })
   }
   
-  currentlyListening = await getSpotifyListeningData(access_token);
+  currentlyListening = await getSpotifyListeningData(access_token)
+    .catch(() => ({ isPlaying: false }));
 }
 
 updateCurrentlyListening();
