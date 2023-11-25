@@ -16,6 +16,7 @@
     "database:down": "docker compose down"
   },
   "devDependencies": {
+    "@types/jwa": "^2.0.3",
     "@types/node": "^18.14.6",
     "@types/signale": "^1.4.4",
     "@types/spotify-web-api-node": "^5.0.11",
@@ -29,6 +30,8 @@
     "@types/koa": "^2.13.5",
     "argon2": "^0.30.3",
     "dotenv": "^16.0.3",
+    "jwa": "^2.0.0",
+    "playwright": "^1.40.0",
     "prisma": "^4.11.0",
     "signale": "^1.4.0",
     "spotify-web-api-node": "^5.0.2"

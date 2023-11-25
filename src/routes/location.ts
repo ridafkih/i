@@ -1,10 +1,26 @@
 import { route, validation as v } from "18h";
 import { addLocation, getLastLocation } from "../actions/location";
 import { ensureAuthenticated } from "../middleware/auth";
+import jwa from "jwa";
 
 import { logRequest } from "../middleware/log";
 
+const { sign } = jwa("ES256");
+
 const LOCATION_TIME_DELAY = 0; // 1000 * 60 * 60 * 60 * 24;
+const {
+  MAPKIT_PRIVATE_KEY,
+  MAPKIT_TEAM_ID,
+  MAPKIT_KEY_ID
+} = process.env;
+
+
+const getSignedMapSnapshotUrl = (params: string) => {
+  const snapshotPath = `/api/v1/snapshot?${params}`;
+  const completePath = `${snapshotPath}&teamId=${MAPKIT_TEAM_ID}&keyId=${MAPKIT_KEY_ID}`;
+  const signature = sign(completePath, MAPKIT_PRIVATE_KEY!);
+  return `${completePath}&signature=${signature}`;
+}
 
 export default route<{ delay?: string }>({
   get: {
@@ -15,6 +31,7 @@ export default route<{ delay?: string }>({
         longitude: v.number(),
         latitude: v.number(),
         date: v.number(),
+        snapshot: v.string(),
       }),
     },
     middleware: { pre: [logRequest] },
@@ -22,8 +39,17 @@ export default route<{ delay?: string }>({
       const { longitude, latitude, city, region, date } = await getLastLocation(LOCATION_TIME_DELAY);
       const description = `${city}, ${region}`;
 
+      const parameters = new URLSearchParams();
+      parameters.append("center", `${latitude},${longitude}`);
+      parameters.append("size", "1200x900");
+      parameters.append("t", "mutedStandard");
+      parameters.append("colorScheme", "dark");
+      parameters.append("poi", "0");
+
+      const snapshot = getSignedMapSnapshotUrl(parameters.toString());
+
       return {
-        body: { description, longitude, latitude, date: date?.getTime() },
+        body: { description, longitude, latitude, snapshot, date: date?.getTime() },
       };
     },
   },
