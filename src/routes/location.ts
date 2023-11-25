@@ -19,7 +19,7 @@ const getSignedMapSnapshotUrl = (params: string) => {
   const snapshotPath = `/api/v1/snapshot?${params}`;
   const completePath = `${snapshotPath}&teamId=${MAPKIT_TEAM_ID}&keyId=${MAPKIT_KEY_ID}`;
   const signature = sign(completePath, MAPKIT_PRIVATE_KEY!);
-  return `${completePath}&signature=${signature}`;
+  return `https://snapshot.apple-mapkit.com${completePath}&signature=${signature}`;
 }
 
 export default route<{ delay?: string }>({
@@ -41,10 +41,12 @@ export default route<{ delay?: string }>({
 
       const parameters = new URLSearchParams();
       parameters.append("center", `${latitude},${longitude}`);
-      parameters.append("size", "1200x900");
+      parameters.append("size", "640x640");
+      parameters.append("scale", "3");
       parameters.append("t", "mutedStandard");
       parameters.append("colorScheme", "dark");
       parameters.append("poi", "0");
+      parameters.append("z", "10");
 
       const snapshot = getSignedMapSnapshotUrl(parameters.toString());
 

@@ -1,6 +1,7 @@
 import { route, validation as v } from "18h";
 import { spotifyApi } from "../../utils/spotify";
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../singletons/prisma";
 
 export default route<{ code: string }>({
   get: {
@@ -8,9 +9,7 @@ export default route<{ code: string }>({
       request: v.null(),
       response: v.null(),
     },
-    async handler(context) {
-      const client = new PrismaClient();
-      
+    async handler(context) {      
       const { code } = context.query as Record<string, string>;
       const { body: auth } = await spotifyApi.authorizationCodeGrant(code);
 
@@ -22,7 +21,7 @@ export default route<{ code: string }>({
       if (me?.body.id !== process.env.SPOTIFY_USER_ID) {
         return { status: 302, headers: { location: "/" } };
       } else {
-        await client.spotifyKey.create({
+        await prisma.spotifyKey.create({
           data: {
             refresh_token,
             access_token,

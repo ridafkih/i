@@ -4,6 +4,7 @@ import {
   refreshSpotifyAccessToken,
 } from "../../utils/spotify";
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../singletons/prisma";
 
 const currentlyListeningResponse = v.union([
   v.object({
@@ -30,15 +31,14 @@ let currentlyListening: typeof currentlyListeningResponse._type = {
 }
 
 const updateCurrentlyListening = async () => {
-  const client = new PrismaClient();
-  const spotifyKey = await client.spotifyKey.findFirst();
+  const spotifyKey = await prisma.spotifyKey.findFirst();
 
   if (!spotifyKey) return;
   const { access_token, refresh_token, expiresIn, createdAt } = spotifyKey;
 
   if (isTokenExpired(expiresIn, createdAt)) {
     const { access_token, expires_in } = await refreshSpotifyAccessToken(refresh_token);
-    await client.spotifyKey.update({
+    await prisma.spotifyKey.update({
       where: {
         id: spotifyKey.id
       },
